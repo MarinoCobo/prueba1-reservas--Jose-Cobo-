@@ -1,49 +1,56 @@
-# Feature Specification: Reservas de sala
+# Especificación: Reservas de sala
 
-**Feature Branch**: `001-reservas-sala`
-**Created**: 2026-10-01
-**Status**: Draft
+**Creada**: 2026-10-01
+**Estado**: Borrador
 
-## User Scenarios & Testing
+## Historias y escenarios
 
-### User Story 1 — Reservar una sala (Priority: P1)
+### Historia 1 — Reservar una sala
 
 Como estudiante autenticado, quiero reservar una sala de estudio por un intervalo de tiempo
 para tener dónde trabajar con mi grupo.
 
-**Why this priority**: sin reservas, la app no tiene propósito.
+**Prioridad**: sin reservas, la aplicación no cumple su propósito.
 
-**Independent Test**: se puede probar creando una reserva y comprobando que queda registrada.
+**Prueba independiente**: se puede solicitar una reserva y comprobar si fue aceptada.
 
-**Acceptance Scenarios**:
+**Escenarios de aceptación**:
 
-1. **Dado** que la sala A está libre, **Cuando** la reservo de 09:00 a 10:00, **Entonces** la
-   reserva queda registrada a mi nombre.
-2. **Dado** que elijo como inicio las 10:00 y como fin las 09:00, **Cuando** intento reservar,
-   **Entonces** la reserva se rechaza con el mensaje "La hora de fin debe ser posterior a la de inicio".
+1. **Dado** que la sala A está libre, **Cuando** la reservo de 09:00 a 10:00,
+   **Entonces** la reserva queda registrada a mi nombre.
+2. **Dado** que elijo como inicio las 10:00 y como fin las 09:00,
+   **Cuando** intento reservar, **Entonces** la reserva se rechaza con el mensaje
+   "La hora de fin debe ser posterior a la de inicio".
+3. **Dado** que la sala A ya está reservada de 09:00 a 10:00,
+   **Cuando** solicito la sala A de 09:30 a 10:30, **Entonces** la solicitud se rechaza con el
+   mensaje "La sala ya está reservada en ese horario".
+4. **Dado** que la sala A ya está reservada de 09:00 a 10:00,
+   **Cuando** solicito la sala A de 09:15 a 09:45, **Entonces** la solicitud se rechaza con el
+   mensaje "La sala ya está reservada en ese horario".
+5. **Dado** que la sala A ya está reservada de 09:00 a 10:00,
+   **Cuando** solicito la sala A de 08:00 a 11:00, **Entonces** la solicitud se rechaza con el
+   mensaje "La sala ya está reservada en ese horario".
+6. **Dado** que la sala A ya está reservada de 09:00 a 10:00,
+   **Cuando** solicito la sala A de 10:00 a 11:00, **Entonces** la solicitud se acepta.
+7. **Dado** que la sala A está reservada de 09:00 a 10:00 y la sala B está libre,
+   **Cuando** solicito la sala B de 09:00 a 10:00, **Entonces** la solicitud se acepta.
 
-### Edge Cases
+## Requisitos
 
-- ¿Qué pasa si la sala ya está ocupada en ese horario?
+### Requisitos funcionales
 
-## Requirements
+- **RF-001**: El estudiante puede elegir una sala y un horario de inicio y fin.
+- **RF-002**: El sistema registra una solicitud válida cuando la sala está disponible.
+- **RF-003**: El horario de fin debe ser posterior al horario de inicio.
+- **RF-004**: Dos reservas de la misma sala no pueden compartir ningún instante de tiempo.
+- **RF-005**: Una reserva que termina cuando otra empieza no se considera solapada.
+- **RF-006**: La disponibilidad de una sala se evalúa de forma independiente de las demás salas.
 
-### Functional Requirements
-
-- **FR-001**: El estudiante elige una sala, una hora de inicio y una hora de fin.
-- **FR-002**: La pantalla `ReservaPage` usa un `DropdownButton` para las salas y `showTimePicker`
-  para las horas.
-- **FR-003**: El estado del formulario se maneja con `setState` dentro de
-  `lib/presentation/reserva_page.dart`.
-- **FR-004**: La reserva se guarda en la tabla `reservas` de Supabase usando el paquete
-  `supabase_flutter`.
-- **FR-005**: La hora de fin debe ser posterior a la hora de inicio.
-
-### Key Entities
+### Entidades principales
 
 - **Reserva**: sala, estudiante, inicio y fin.
-- **Sala**: identificada por su nombre (Sala A, Sala B, Sala C).
+- **Sala**: espacio que puede reservarse de forma independiente.
 
-## Success Criteria
+## Criterios de éxito
 
-- **SC-001**: Un estudiante completa una reserva en menos de 30 segundos.
+- **CE-001**: Un estudiante completa una solicitud de reserva en menos de 30 segundos.
