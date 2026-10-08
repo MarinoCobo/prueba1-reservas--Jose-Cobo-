@@ -13,8 +13,7 @@ SolicitudReserva solicitud(
   int minutoFin = 0,
   String salaId = 'Sala A',
   String usuarioId = 'u1',
-}) =>
-    SolicitudReserva(
+}) => SolicitudReserva(
       salaId: salaId,
       usuarioId: usuarioId,
       inicio: hora(inicio, minutoInicio),
@@ -51,13 +50,11 @@ void main() {
     ));
 
     expect(resultado.aceptada, isFalse);
-    expect(
-        resultado.mensaje, 'La hora de fin debe ser posterior a la de inicio');
+    expect(resultado.mensaje, 'La hora de fin debe ser posterior a la de inicio');
     expect(repositorio.reservas, isEmpty);
   });
 
-  test('rechaza un solapamiento parcial con una reserva de la misma sala',
-      () async {
+  test('rechaza un solapamiento parcial con una reserva de la misma sala', () async {
     await crearReserva(solicitud(9, 10));
 
     final resultado = await crearReserva(
